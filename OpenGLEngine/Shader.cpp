@@ -79,6 +79,11 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	glDeleteShader(fragID);
 }
 
+Shader::~Shader()
+{
+
+}
+
 void Shader::Use()
 {
 	glUseProgram(m_programID);
@@ -102,4 +107,9 @@ void Shader::SetFloat(const std::string name, float value) const
 void Shader::SetMat4(const std::string name, glm::mat4 value) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::Destroy()
+{
+	glDeleteProgram(m_programID);
 }
