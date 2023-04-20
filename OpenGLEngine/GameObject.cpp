@@ -1,79 +1,140 @@
 #include "GameObject.h"
 
-#include "STB.h"
+//#include "STB.h"
+
+#define TEST 2
+
+#if TEST == 2
+std::vector<float> vertices = {
+		// positions          // normals           // texture coords
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+	};
+#elif TEST == 1
 
 std::vector<float> vertices = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f,  0.5f, -0.5f,
+	 0.5f,  0.5f, -0.5f,
+	-0.5f,  0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
 
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,
+	 0.5f, -0.5f,  0.5f,
+	 0.5f,  0.5f,  0.5f,
+	 0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f, -0.5f,  0.5f,
 
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
 
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,
+	 0.5f,  0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f,  0.5f,
+	 0.5f,  0.5f,  0.5f,
 
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f, -0.5f,
+	 0.5f, -0.5f,  0.5f,
+	 0.5f, -0.5f,  0.5f,
+	-0.5f, -0.5f,  0.5f,
+	-0.5f, -0.5f, -0.5f,
 
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	-0.5f,  0.5f, -0.5f,
+	 0.5f,  0.5f, -0.5f,
+	 0.5f,  0.5f,  0.5f,
+	 0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f, -0.5f,
 };
+#endif
 
-GameObject::GameObject()
-	:m_position(glm::vec3(0,0,0))
-	,m_shaderProgram("Shaders/simpleVertex.vert", "Shaders/simpleFragment.frag")
-	,m_model(glm::mat4(1.0f))
+
+
+GameObject::GameObject(glm::vec3 pos)
+	: m_position(pos)
+	, m_forward(glm::vec3(0, 0, -1))
+	, m_rotation(0.0f,0.0f,0.0f)
+	, m_scale(glm::vec3(1, 1, 1))
 {
-	m_model = glm::translate(m_model, m_position);
+	/*m_shaderProgram.SetInt("uMaterial.diffuse", 0);
+	m_shaderProgram.SetInt("uMaterial.specular", 1);
+	m_shaderProgram.SetVec3("uMaterial.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+	m_shaderProgram.SetFloat("uMaterial.shininess", 32.0f);
 
-	SetVertices(vertices);
-	InitTexture();
-	InitMesh();
+	m_shaderProgram.SetVec3("uPLight[0].ambient", glm::vec3(0.5f, 0.5f, 0.5f));
+	m_shaderProgram.SetVec3("uPLight[0].diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+	m_shaderProgram.SetVec3("uPLight[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	m_shaderProgram.SetFloat("uPLight[0].constant", 1.0f);
+	m_shaderProgram.SetFloat("uPLight[0].linear", 0.09f);
+	m_shaderProgram.SetFloat("uPLight[0].quadratic", 0.032f);
+
+	m_shaderProgram.SetVec3("uDLight.ambient", glm::vec3(0.01f, 0.01f, 0.01f));
+	m_shaderProgram.SetVec3("uDLight.diffuse", glm::vec3(0.01f, 0.01f, 0.01f));
+	m_shaderProgram.SetVec3("uDLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	m_shaderProgram.SetVec3("uSLight.ambient", glm::vec3(0.5f, 0.5f, 0.5f));
+	m_shaderProgram.SetVec3("uSLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+	m_shaderProgram.SetVec3("uSLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	m_shaderProgram.SetFloat("uSLight.constant", 1.0f);
+	m_shaderProgram.SetFloat("uSLight.linear", 0.09f);
+	m_shaderProgram.SetFloat("uSLight.quadratic", 0.032f);*/
 }
 
-GameObject::GameObject(glm::vec3 pos, bool useShader)
+GameObject::GameObject(glm::vec3 pos, const char* modelPath, const char* vertexShaderPath, const char* fragmentShaderPath)
 	: m_position(pos)
-	, m_forward(glm::vec3(0, 0, 1))
+	, m_forward(glm::vec3(0, 0,-1))
+	, m_rotation(0.0f, 0.0f, 0.0f)
 	, m_scale(glm::vec3(1, 1, 1))
-	, m_shaderProgram("Shaders/simpleVertex.vert", "Shaders/simpleFragment.frag")
 {
-	m_model = glm::mat4(1.0f);
-	m_model = glm::translate(m_model, m_position);
-
-	m_shaderProgram.Use();
-	m_shaderProgram.SetInt("tex", 0);
-	m_shaderProgram.SetInt("tex2", 1);
-
-	SetVertices(vertices);
-	InitTexture();
-	InitMesh();
+	SetModel(std::make_shared<Model>(this, modelPath, vertexShaderPath, fragmentShaderPath));
 }
 
 GameObject::~GameObject()
@@ -81,109 +142,52 @@ GameObject::~GameObject()
 
 }
 
-glm::mat4 GameObject::Model()
+glm::mat4 GameObject::ModelMatrix()
 {
-	m_model = glm::mat4(1.0f);
-	m_model = glm::translate(m_model, m_position);
-	m_model = glm::lookAt(m_position, m_position + m_forward, glm::vec3(0.0, 1.0, 0.0));
+	glm::mat4 mat = glm::mat4(1.0f);
+	glm::mat4 rot = glm::rotate(mat, glm::radians(m_rotation.x), glm::vec3(1.0, 0.0, 0.0)) * glm::rotate(mat, glm::radians(m_rotation.y), glm::vec3(0.0, 1.0, 0.0)) * glm::rotate(mat, glm::radians(m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
+	mat = glm::translate(mat, m_position) * rot * glm::scale(mat, m_scale);
 
-	return m_model;
+	return mat;
 }
 
-void GameObject::SetVertices(float verts[])
+void GameObject::SetRotation(glm::vec3 rot)
 {
-	int size = (sizeof(verts) / sizeof(verts[0]));
-	m_vertices = std::vector<float>(verts, verts + size);
+	m_rotation = rot;
+
+	m_forward.x = cos(glm::radians(rot.x)) * cos(glm::radians(rot.y));
+	m_forward.y = sin(glm::radians(rot.y));
+	m_forward.z = sin(glm::radians(rot.x)) * cos(glm::radians(rot.y));
 }
 
-void GameObject::SetVertices(std::vector<float> verts)
+void GameObject::SetForwardDirection(glm::vec3 rot)
 {
-	m_vertices = verts;
+	m_forward = rot;
+
+	m_rotation.y = glm::degrees(-asin(glm::dot(m_forward, glm::vec3(0.0f, 1.0f, 0.0f))));
+	glm::vec3 normForward = normalize(glm::vec3(m_forward.x, 0.0f, m_forward.z));
+	m_rotation.x = glm::degrees(acos(dot(normForward, glm::vec3(1.0f, 0.0f, 0.0f))));
 }
 
-void GameObject::Update()
+void GameObject::Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
 {
+	if (m_pModel !=  nullptr)
+		m_pModel->Draw(projectionMatrix, viewMatrix, ModelMatrix());
+}
+
+void GameObject::Update(float deltaTime)
+{
+	for (int i = 0; i < m_components.size(); i++)
+	{
+		m_components[i]->Update(deltaTime);
+	}
 }
 
 void GameObject::Destroy()
 {
-	glDeleteVertexArrays(1, &m_vertexArrayObject);
-	glDeleteBuffers(1, &m_elementBufferObject);
-	glDeleteBuffers(1, &m_vertexBufferObject);
-
-	m_shaderProgram.Destroy();
-}
-
-void GameObject::InitMesh()
-{
-	glGenVertexArrays(1, &m_vertexArrayObject);
-	glGenBuffers(1, &m_vertexBufferObject);
-	glGenBuffers(1, &m_elementBufferObject);
-
-	if (m_vertices.size() > 0)
+	for (int i = 0; i < m_components.size(); i++)
 	{
-		glBindVertexArray(m_vertexArrayObject);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices[0]) * m_vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
+		m_components[i]->Destroy();
 	}
-
-	if (m_indices.size() > 0)
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBufferObject);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), &m_indices[0], GL_STATIC_DRAW);
-	}
-
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindVertexArray(0);
 }
 
-void GameObject::InitTexture()
-{
-	stbi_set_flip_vertically_on_load(true);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	int imgWidth, imgHeight, nrChannels;
-	unsigned char* imgData = stbi_load("Textures/Example1.jpg", &imgWidth, &imgHeight, &nrChannels, 0);
-
-	int imgWidth2, imgHeight2, nrChannels2;
-	unsigned char* imgData2 = stbi_load("Textures/Example5.jpg", &imgWidth2, &imgHeight2, &nrChannels2, 0);
-
-	unsigned int texID, texID2;
-	glGenTextures(1, &texID);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glGenTextures(1, &texID2);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texID2);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth2, imgHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData2);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	stbi_image_free(imgData);
-	stbi_image_free(imgData2);
-
-	m_textureIDs.push_back(texID);
-	m_textureIDs.push_back(texID2);
-}
-
-void GameObject::UpdateTransform()
-{
-	/*glm::vec3 front;
-	front.x = cos(glm::radians(-90.0f)) * cos(glm::radians(0.0f));
-	front.y = sin(glm::radians(0.0f));
-	front.z = sin(glm::radians(-90.0f)) * cos(glm::radians(0.0f));
-	m_forward = glm::normalize(front);*/
-}

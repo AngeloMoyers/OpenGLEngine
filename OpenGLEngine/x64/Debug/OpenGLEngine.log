@@ -1,2 +1,8 @@
 ﻿  Camera.cpp
+  GameObject.cpp
+  Window.cpp
+F:\Projects\OpenGLEngine\OpenGLEngine\Window.cpp(114,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+F:\Projects\OpenGLEngine\OpenGLEngine\Window.cpp(119,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+  Generating Code...
   OpenGLEngine.vcxproj -> F:\Projects\OpenGLEngine\x64\Debug\OpenGLEngine.exe

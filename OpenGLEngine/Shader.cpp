@@ -31,6 +31,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	catch (std::ifstream::failure e)
 	{
 		std::cout << "Shader files not succesfully read!" << std::endl;
+		m_isValid = false;
 	}
 
 	const char* vSource = vertCode.c_str();
@@ -48,7 +49,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	if (!success)
 	{
 		glGetShaderInfoLog(vertID, 512, NULL, infoLog);
-		throw std::runtime_error("Failed to compile vertex shader: " + *infoLog);
+		std::cout << ("Failed to compile vertex shader: " + *infoLog);
+		m_isValid = false;
 	}
 
 	fragID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -59,7 +61,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	if (!success)
 	{
 		glGetShaderInfoLog(fragID, 512, NULL, infoLog);
-		throw std::runtime_error("Failed to compile fragment shader: " + *infoLog);
+		std::cout << ("Failed to compile fragment shader: " + *infoLog);
+		m_isValid = false;
 	}
 
 	//program
@@ -72,7 +75,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	if (!success)
 	{
 		glGetProgramInfoLog(m_programID, 512, NULL, infoLog);
-		throw std::runtime_error("Failed to link shader program: " + *infoLog);
+		std::cout << ("Failed to link shader program: " + *infoLog);
 	}
 
 	glDeleteShader(vertID);
@@ -102,6 +105,16 @@ void Shader::SetInt(const std::string name, int value) const
 void Shader::SetFloat(const std::string name, float value) const
 {
 	glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
+}
+
+void Shader::SetVec3(const std::string name, glm::vec3 value) const
+{
+	glUniform3fv(glGetUniformLocation(m_programID, name.c_str()), 1, glm::value_ptr(value));
+}
+
+void Shader::SetVec4(const std::string name, glm::vec4 value) const
+{
+	glUniform4fv(glGetUniformLocation(m_programID, name.c_str()), 1, glm::value_ptr(value));
 }
 
 void Shader::SetMat4(const std::string name, glm::mat4 value) const

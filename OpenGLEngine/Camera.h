@@ -18,7 +18,7 @@ public:
     void LookAt(glm::vec3 target);
     void LookAt(GameObject* target);
 
-    glm::mat4 GetView() { return Model(); }
+    glm::mat4 GetView() { return glm::lookAt(m_position, m_position + m_forward, Up());}
     float GetFOV() { return m_fov; }
     void SetFOV(float _fov) {m_fov = _fov;}
 

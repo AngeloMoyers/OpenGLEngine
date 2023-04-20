@@ -17,6 +17,8 @@ private:
 	const int m_width;
 	const int m_height;
 
+	glm::vec4 m_ambientLighting;
+
 	GLFWwindow* m_pWindow;
 
 	static glm::vec2 m_mousePos;

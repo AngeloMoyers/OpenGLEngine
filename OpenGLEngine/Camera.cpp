@@ -2,7 +2,7 @@
 
 Camera::Camera(glm::vec2 screenSize)
 	:GameObject(glm::vec3(0.0,0.0,0.0))
-	,m_ypr(glm::vec3( 0.0f, 0.0f, 0.0f))
+	,m_ypr(glm::vec3( -90.0f, 0.0f, 0.0f))
 	,m_turnSensitivity(0.1f)
 {
 	m_lastMousePos.x = screenSize.x / 2.0f;
@@ -11,18 +11,18 @@ Camera::Camera(glm::vec2 screenSize)
 
 void Camera::LookAt(glm::vec3 target)
 {
-	m_model = glm::lookAt(m_position, target, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_forward = target - m_position;
 }
 
 void Camera::LookAt(GameObject* target)
 {
-	m_model = glm::lookAt(m_position, target->GetPosition(), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_forward = target->GetPosition() - m_position;
 }
 
 void Camera::SetForwardDirection(glm::vec3 rot)
 {
 	GameObject::SetForwardDirection(rot);
-	UpdateYPR();
+	//UpdateYPR();
 }
 
 void Camera::UpdateMouseInput(glm::vec2 mPos)
