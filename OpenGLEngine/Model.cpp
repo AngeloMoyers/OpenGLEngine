@@ -1,22 +1,34 @@
 #include "Model.h"
 
+#include "LightingModule.h"
+
 #include <stdexcept>
 
 #include "STB.h"
+
+//temp todo
+#include "GLFW/glfw3.h"
 
 Model::Model(GameObject* owner, const char* modelPath, const char* vertShaderPath, const char* fragShaderPath)
 	:Component(owner)
 	,m_pShader(ShaderFactory::LoadShader(vertShaderPath, fragShaderPath))
 {
+
 	LoadModel(modelPath);
 }
 
-void Model::Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm::mat4 modelMatrix)
+void Model::Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm::mat4 modelMatrix, LightingModule* plightModule)
 {
 	m_pShader->Use();
+
+	if (plightModule)
+		plightModule->SetShaderLightingData(m_pShader.get());
+
 	m_pShader->SetMat4("projection", projectionMatrix);
 	m_pShader->SetMat4("view", viewMatrix);
 	m_pShader->SetMat4("model", modelMatrix);
+
+	m_pShader->SetFloat("uMaterial.shininess", 32.0f);
 
 	for (int i = 0; i < m_meshes.size(); i++)
 	{

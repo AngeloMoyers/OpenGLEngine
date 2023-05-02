@@ -13,6 +13,8 @@
 using std::shared_ptr;
 using std::make_shared;
 
+class LightingModule;
+
 class Model : Component
 {
 private:
@@ -27,7 +29,7 @@ public:
 	
 
 private:
-	void Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm::mat4 modelMatrix);
+	void Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm::mat4 modelMatrix, LightingModule* plightModule);
 	void LoadModel(std::string path);
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);

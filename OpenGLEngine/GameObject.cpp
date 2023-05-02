@@ -2,6 +2,8 @@
 
 //#include "STB.h"
 
+#include "LightingModule.h"
+
 #define TEST 2
 
 #if TEST == 2
@@ -104,28 +106,7 @@ GameObject::GameObject(glm::vec3 pos)
 	, m_rotation(0.0f,0.0f,0.0f)
 	, m_scale(glm::vec3(1, 1, 1))
 {
-	/*m_shaderProgram.SetInt("uMaterial.diffuse", 0);
-	m_shaderProgram.SetInt("uMaterial.specular", 1);
-	m_shaderProgram.SetVec3("uMaterial.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-	m_shaderProgram.SetFloat("uMaterial.shininess", 32.0f);
 
-	m_shaderProgram.SetVec3("uPLight[0].ambient", glm::vec3(0.5f, 0.5f, 0.5f));
-	m_shaderProgram.SetVec3("uPLight[0].diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-	m_shaderProgram.SetVec3("uPLight[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
-	m_shaderProgram.SetFloat("uPLight[0].constant", 1.0f);
-	m_shaderProgram.SetFloat("uPLight[0].linear", 0.09f);
-	m_shaderProgram.SetFloat("uPLight[0].quadratic", 0.032f);
-
-	m_shaderProgram.SetVec3("uDLight.ambient", glm::vec3(0.01f, 0.01f, 0.01f));
-	m_shaderProgram.SetVec3("uDLight.diffuse", glm::vec3(0.01f, 0.01f, 0.01f));
-	m_shaderProgram.SetVec3("uDLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-
-	m_shaderProgram.SetVec3("uSLight.ambient", glm::vec3(0.5f, 0.5f, 0.5f));
-	m_shaderProgram.SetVec3("uSLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-	m_shaderProgram.SetVec3("uSLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-	m_shaderProgram.SetFloat("uSLight.constant", 1.0f);
-	m_shaderProgram.SetFloat("uSLight.linear", 0.09f);
-	m_shaderProgram.SetFloat("uSLight.quadratic", 0.032f);*/
 }
 
 GameObject::GameObject(glm::vec3 pos, const char* modelPath, const char* vertexShaderPath, const char* fragmentShaderPath)
@@ -169,10 +150,10 @@ void GameObject::SetForwardDirection(glm::vec3 rot)
 	m_rotation.x = glm::degrees(acos(dot(normForward, glm::vec3(1.0f, 0.0f, 0.0f))));
 }
 
-void GameObject::Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
+void GameObject::Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, LightingModule* plightModule)
 {
 	if (m_pModel !=  nullptr)
-		m_pModel->Draw(projectionMatrix, viewMatrix, ModelMatrix());
+		m_pModel->Draw(projectionMatrix, viewMatrix, ModelMatrix(), plightModule);
 }
 
 void GameObject::Update(float deltaTime)

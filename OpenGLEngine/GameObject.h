@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+class LightingModule;
 
 class GameObject
 {
@@ -48,7 +49,7 @@ public:
 	void SetModel(std::shared_ptr<Model> pModel) { m_pModel = pModel; }
 	void SetModel(const char* modelPath) { /*TODO*/ }
 
-	void Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
+	void Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, LightingModule* plightModule);
 
 
 	virtual void Update(float deltaTime);

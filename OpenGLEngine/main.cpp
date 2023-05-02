@@ -14,6 +14,7 @@
 
 int main()
 {
+
 	Window window(800, 600);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

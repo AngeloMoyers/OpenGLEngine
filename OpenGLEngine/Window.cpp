@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "Model.h"
+#include "Scene.h"
 
 #include <stdexcept>
 
@@ -18,6 +19,7 @@ Window::Window(const int width, const int height)
 	,m_ambientLighting(glm::vec4(0.8f, 0.8f,1.0f,0.5f))
 {
 	Init(width, height);
+	m_pScene = std::make_unique<Scene>();
 }
 
 Window::~Window()
@@ -92,24 +94,46 @@ void Window::RetrieveScrollInput(GLFWwindow* pWindow, double xOffset, double yOf
 
 void Window::Run()
 {
+	//objects
+	shared_ptr<GameObject> bp = make_shared<GameObject>(glm::vec3(0.0, 0.0, 0.0), "Models/backpack/backpack.obj", "Shaders/phongVertex.vert", "Shaders/phongFragment.frag");
+	m_pScene->AddGameObject(bp);
 
-	std::vector<GameObject*> objects;
+	std::shared_ptr<Camera> cam = make_shared<Camera>(glm::vec2(m_width, m_height));
+	cam->SetPosition(glm::vec3(0.0f, 0.0f, 10.0f));
+	cam->SetForwardDirection(glm::vec3(0.0f, 0.0f, -1.0f));
 
-	GameObject light(glm::vec3(3.0f, 0.0, 0.0f),  "Models/backpack/backpack.obj", "Shaders/simpleVertex.vert", "Shaders/lightFragment.frag");
-	light.SetScale(glm::vec3(0.5f));
-	light.SetRotation(glm::vec3(0.0f, 90.0f, 45.0f));
+	m_pScene->SetMainCamera(cam);
 
-	objects.push_back(&light);
+	//Lighting
+	LightColorData dirLightData;
+	dirLightData.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+	dirLightData.diffuse = glm::vec3(0.3f, 0.3f, 0.3f);
+	dirLightData.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	m_pScene->AddLight(glm::vec3(-.5, -1, 0), dirLightData);
 
+	shared_ptr<GameObject> light = make_shared<GameObject>(glm::vec3(3.0f, 3.0, 0.0f),  "Models/sphere/sphere.obj", "Shaders/simpleVertex.vert", "Shaders/lightFragment.frag");
+	light->SetScale(glm::vec3(0.5f));
+	light->SetRotation(glm::vec3(0.0f, 90.0f, 45.0f));
+	m_pScene->AddGameObject(light);
+	LightColorData pointLightdata;
+	pointLightdata.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+	pointLightdata.diffuse = glm::vec3(0.3f, 0.3f, 0.3f);
+	pointLightdata.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	LightAttenuationData pointAttenuationData;
+	pointAttenuationData.constant = 1.0f;
+	pointAttenuationData.linear = 0.09f;
+	pointAttenuationData.quadratic = 0.032f;
+	m_pScene->AddLight(light->GetPosition(), pointLightdata, pointAttenuationData);
 
-	GameObject bp = GameObject(glm::vec3(0.0, 0.0, 0.0), "Models/backpack/backpack.obj", "Shaders/simpleVertex.vert", "Shaders/simpleFragment.frag");
-	objects.push_back(&bp);
-
-	Camera cam = Camera(glm::vec2(m_width, m_height));
-	cam.SetPosition(glm::vec3(0.0f, 0.0f, 10.0f));
-	cam.SetForwardDirection(glm::vec3(0.0f, 0.0f, -1.0f));
-
-	glm::mat4 projection;
+	LightColorData spotLightData;
+	spotLightData.ambient = glm::vec3(0.5f, 0.5f, 0.5f);
+	spotLightData.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+	spotLightData.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	LightAttenuationData spotAttenuationData;
+	spotAttenuationData.constant = 1.0f;
+	spotAttenuationData.linear = 0.09f;
+	spotAttenuationData.quadratic = 0.032f;
+	auto spotLight = m_pScene->AddLight(cam->GetPosition(), cam->Forward(), spotLightData, spotAttenuationData, 12.0, 18.0);
 
 	float lastFrameTime = glfwGetTime();
 	float currentFrametime = lastFrameTime;;
@@ -120,31 +144,25 @@ void Window::Run()
 		float deltaTime =currentFrametime - lastFrameTime;
 		lastFrameTime = currentFrametime;
 
+		m_pScene->Update(deltaTime);
+
 		//input
-		HandleInput(m_pWindow, &cam);
-		cam.UpdateMouseInput(m_mousePos);
-		cam.SetFOV(m_fov);
+		HandleInput(m_pWindow, cam.get());
+		cam->UpdateMouseInput(m_mousePos);
+		cam->SetFOV(m_fov);
 
-		bp.SetRotation(glm::vec3(0.0, 30 * glm::sin(glfwGetTime()), 0.0));
+		spotLight->UpdateTransform(cam->GetPosition(), cam->Forward());
+
+		bp->SetRotation(glm::vec3(0.0, 30 * glm::sin(glfwGetTime()), 0.0));
 		
-		projection = glm::perspective(glm::radians(cam.GetFOV()), (float)m_width / (float)m_height, 0.1f, 100.0f);
-
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		for (int i = 0; i < objects.size(); i++)
-		{
-			objects[i]->Update(deltaTime);
-			objects[i]->Draw(projection, cam.GetView());
-		}
+		m_pScene->Update(deltaTime);
+		m_pScene->Draw(glm::ivec2(m_width, m_height));
 		
 		//Poll Events and swap buffers
 		glfwSwapBuffers(m_pWindow);
 		glfwPollEvents();
-	}
-
-	for (int i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Destroy();
 	}
 }

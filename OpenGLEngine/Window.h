@@ -11,6 +11,8 @@
 #include <iostream>
 #include <memory>
 
+class Scene;
+
 class Window
 {
 private:
@@ -20,6 +22,8 @@ private:
 	glm::vec4 m_ambientLighting;
 
 	GLFWwindow* m_pWindow;
+
+	std::unique_ptr<Scene> m_pScene;
 
 	static glm::vec2 m_mousePos;
 	static float m_fov;
